@@ -89,106 +89,88 @@ Then rotates the feedback pot
 ## Wiring
 
 ### Power Distribution
-- ESP32 3.3V → All component VDD pins (via distribution)
+- ESP32 3V3 → All component power pins (via distribution)
 - ESP32 GND → All component GND pins (common ground)
-- Add 100µF electrolytic capacitor between 3.3V and GND (power supply decoupling)
-- Add 0.1µF ceramic capacitor between 3.3V and GND near each IC (local decoupling)
+- Add 100µF electrolytic capacitor: **positive (+) to ESP32 3V3**, negative (-) to ESP32 GND (power supply decoupling)
+- Add 0.1µF (100nF) ceramic capacitor between 3V3 and GND near each IC (local decoupling - non-polarized, either direction)
 
 ### PCM 1808 ADC (Audio Input)
-- PCM 1808 VDD → ESP32 3.3V
-- PCM 1808 AVDD → ESP32 3.3V (via 10µF capacitor to GND for filtering)
-- PCM 1808 DVDD → ESP32 3.3V
-- PCM 1808 GND → ESP32 GND
-- PCM 1808 AGND → ESP32 GND
-- PCM 1808 DGND → ESP32 GND
-- PCM 1808 VREF → 3.3V (via 10µF capacitor to GND)
-- PCM 1808 MCLK → ESP32 GPIO 0 (I2S Master Clock)
-- PCM 1808 BCLK → ESP32 GPIO 4 (I2S Bit Clock)
-- PCM 1808 LRCLK → ESP32 GPIO 15 (I2S Left/Right Clock)
-- PCM 1808 DATA → ESP32 GPIO 2 (I2S Data Input)
-- PCM 1808 FMT → GND (I2S format, 0 = I2S mode)
-- PCM 1808 MD0 → GND (Mode select)
-- PCM 1808 MD1 → GND (Mode select)
+- [ ] PCM 1808 3.3V → ESP32 3V3
+- [ ] PCM 1808 GND → ESP32 GND
+- [ ] PCM 1808 SCK → ESP32 D25 (I2S Master Clock - GPIO 25)
+- [ ] PCM 1808 BCK → ESP32 D4 (I2S Bit Clock - GPIO 4)
+- [ ] PCM 1808 LRC → ESP32 D15 (I2S Left/Right Clock - GPIO 15)
+- [ ] PCM 1808 OUT → ESP32 D27 (I2S Data Input - GPIO 27)
+- [ ] PCM 1808 FMY → GND (I2S format, 0 = I2S mode)
+- [ ] PCM 1808 MDO → GND (Mode select)
+- [ ] PCM 1808 MDI → GND (Mode select)
+- [ ] Add 0.1µF (100nF) capacitor between PCM 1808 3.3V and GND (local decoupling - non-polarized, either direction)
+- [ ] Add 47µF capacitor: **positive (+) to PCM 1808 3.3V**, negative (-) to PCM 1808 GND (filtering/decoupling)
 
 ### PCM 5102 DAC (Audio Output)
-- PCM 5102 VDD → ESP32 3.3V
-- PCM 5102 GND → ESP32 GND
-- PCM 5102 BCK → ESP32 GPIO 4 (I2S Bit Clock - shared with ADC)
-- PCM 5102 DIN → ESP32 GPIO 22 (I2S Data Output)
-- PCM 5102 LCK → ESP32 GPIO 15 (I2S Left/Right Clock - shared with ADC)
-- PCM 5102 SCK → ESP32 GPIO 0 (I2S Master Clock - shared with ADC)
-- PCM 5102 FMT → GND (I2S format)
-- PCM 5102 DEMP → GND (De-emphasis control)
-- PCM 5102 XSMT → 3.3V (Soft mute control, HIGH = unmuted)
-- Add 0.1µF capacitor between PCM 5102 VDD and GND
-- Add 10µF capacitor between PCM 5102 VDD and GND
+- [ ] PCM 5102 VIN → ESP32 3V3
+- [ ] PCM 5102 GND → ESP32 GND
+- [ ] PCM 5102 SCK → ESP32 D25 (I2S Master Clock - shared with ADC, GPIO 25)
+- [ ] PCM 5102 BCK → ESP32 D4 (I2S Bit Clock - shared with ADC, GPIO 4)
+- [ ] PCM 5102 DIN → ESP32 D22 (I2S Data Output - GPIO 22)
+- [ ] PCM 5102 LCK → ESP32 D15 (I2S Left/Right Clock - shared with ADC, GPIO 15)
+- [ ] Add 0.1µF (100nF) capacitor between PCM 5102 VIN and GND (local decoupling - non-polarized, either direction)
+- [ ] Add 47µF capacitor: **positive (+) to PCM 5102 VIN**, negative (-) to PCM 5102 GND (filtering/decoupling)
 
 ### SSD1306 OLED Display (I2C)
-- Display VDD → ESP32 3.3V
-- Display GND → ESP32 GND
-- Display SDA → ESP32 GPIO 21 (I2C Data)
-- Display SCL → ESP32 GPIO 22 (I2C Clock) - Note: Check if this conflicts with PCM 5102 DIN
-- Display RESET → ESP32 GPIO 16 (optional, can be tied to 3.3V if not used)
-- Add 4.7kΩ pull-up resistors on SDA and SCL lines (to 3.3V)
-
-**Note:** GPIO 22 is used for both PCM 5102 DIN and Display SCL. You may need to use different pins. Consider:
-- Display SCL → ESP32 GPIO 19 (alternative I2C clock pin)
+- [ ] Display VDD → ESP32 3V3
+- [ ] Display GND → ESP32 GND
+- [ ] Display SDA → ESP32 D21 (I2C Data - GPIO 21)
+- [ ] Display SCK → ESP32 D19 (I2C Clock - GPIO 19)
+- [ ] Add 4.7kΩ pull-up resistors on SDA and SCK lines (to 3V3)
 
 ### Potentiometers (3x 10kΩ linear)
 **Delay Time Pot:**
-- Pot 1 terminal 1 → ESP32 3.3V
-- Pot 1 terminal 2 (wiper) → ESP32 GPIO 32 (ADC1_CH4)
-- Pot 1 terminal 3 → ESP32 GND
+- [ ] Pot 1 terminal 1 → ESP32 3V3
+- [ ] Pot 1 terminal 2 (wiper) → ESP32 D32 (ADC1_CH4 - GPIO 32)
+- [ ] Pot 1 terminal 3 → ESP32 GND
 
 **Feedback Pot:**
-- Pot 2 terminal 1 → ESP32 3.3V
-- Pot 2 terminal 2 (wiper) → ESP32 GPIO 33 (ADC1_CH5)
-- Pot 2 terminal 3 → ESP32 GND
+- [ ] Pot 2 terminal 1 → ESP32 3V3
+- [ ] Pot 2 terminal 2 (wiper) → ESP32 D33 (ADC1_CH5 - GPIO 33)
+- [ ] Pot 2 terminal 3 → ESP32 GND
 
 **Level Pot:**
-- Pot 3 terminal 1 → ESP32 3.3V
-- Pot 3 terminal 2 (wiper) → ESP32 GPIO 34 (ADC1_CH6)
-- Pot 3 terminal 3 → ESP32 GND
+- [ ] Pot 3 terminal 1 → ESP32 3V3
+- [ ] Pot 3 terminal 2 (wiper) → ESP32 D34 (ADC1_CH6 - GPIO 34)
+- [ ] Pot 3 terminal 3 → ESP32 GND
 
 ### Audio Input Jack (Guitar Input)
-- Audio jack tip → 10µF coupling capacitor → 10kΩ resistor → PCM 1808 VINL+
-- Audio jack ring/sleeve → ESP32 GND
-- Add 1kΩ resistor from PCM 1808 VINL+ to GND (input bias/impedance)
-- PCM 1808 VINL- → GND (single-ended input)
-
-### Audio Output Jack (To Amplifier)
-- PCM 5102 LOUT → 10µF coupling capacitor → Audio jack tip
-- PCM 5102 ROUT → 10µF coupling capacitor → Audio jack ring (or tie to LOUT for mono)
-- Audio jack sleeve → ESP32 GND
-- Add 10kΩ resistor from output to GND (output impedance)
+- [ ] Audio jack tip → 47µF coupling capacitor (**positive (+) toward jack tip**, negative (-) toward PCM 1808 LIN) → 10kΩ resistor → PCM 1808 LIN (Left Input)
+- [ ] Audio jack ring/sleeve → ESP32 GND
+- [ ] Add 1kΩ resistor from PCM 1808 LIN to GND (input bias/impedance)
+- [ ] PCM 1808 RIN → GND (Right Input tied to ground for mono/single-ended input)
 
 ### Additional Components Needed
-- 1x 100µF electrolytic capacitor (power supply decoupling)
-- 5x 10µF electrolytic/ceramic capacitors (various filtering/decoupling)
-- 6x 0.1µF ceramic capacitors (local IC decoupling)
-- 2x 4.7kΩ resistors (I2C pull-ups)
-- 1x 10kΩ resistor (audio input bias)
-- 1x 1kΩ resistor (audio input impedance)
-- 1x 10kΩ resistor (audio output impedance)
-- 3x 10kΩ linear potentiometers (already listed)
+- [ ] 1x 100µF electrolytic capacitor (power supply decoupling) - **You have this**
+- [ ] 3x 47µF capacitors (filtering/decoupling: PCM 1808, PCM 5102, and audio input coupling) - **You have these**
+- [ ] 2-3x 0.1µF (100nF) ceramic capacitors (local IC decoupling: PCM 1808, PCM 5102, and power distribution) - **You have these**
+- [ ] 2x 4.7kΩ resistors (I2C pull-ups)
+- [ ] 1x 10kΩ resistor (audio input bias)
+- [ ] 1x 1kΩ resistor (audio input impedance)
+- [ ] 3x 10kΩ linear potentiometers (already listed)
 
 ### Pin Summary
-**ESP32 GPIO Assignments:**
-- GPIO 0: I2S MCLK (Master Clock) - shared ADC/DAC
-- GPIO 2: I2S Data Input (from PCM 1808)
-- GPIO 4: I2S BCLK (Bit Clock) - shared ADC/DAC
-- GPIO 15: I2S LRCLK (Left/Right Clock) - shared ADC/DAC
-- GPIO 16: Display RESET (optional)
-- GPIO 19: I2C SCL (Display clock) - alternative if GPIO 22 conflicts
-- GPIO 21: I2C SDA (Display data)
-- GPIO 22: I2S DIN (to PCM 5102) OR I2C SCL (Display) - choose one
-- GPIO 32: ADC - Delay Time Pot
-- GPIO 33: ADC - Feedback Pot
-- GPIO 34: ADC - Level Pot
+**ESP32 Pin Assignments:**
+- D4 (GPIO 4): I2S BCLK (Bit Clock) - shared ADC/DAC
+- D15 (GPIO 15): I2S LRCLK (Left/Right Clock) - shared ADC/DAC
+- D19 (GPIO 19): I2C SCK (Display clock)
+- D21 (GPIO 21): I2C SDA (Display data)
+- D22 (GPIO 22): I2S DIN (to PCM 5102)
+- D25 (GPIO 25): I2S MCLK (Master Clock) - shared ADC/DAC
+- D27 (GPIO 27): I2S Data Input (from PCM 1808)
+- D32 (GPIO 32): ADC - Delay Time Pot
+- D33 (GPIO 33): ADC - Feedback Pot
+- D34 (GPIO 34): ADC - Level Pot
 
 **Important Notes:**
-1. GPIO 22 conflict: PCM 5102 DIN and Display SCL both want GPIO 22. Use GPIO 19 for Display SCL instead.
-2. Audio ground: Ensure all audio components share a common ground with the ESP32.
-3. Power: ESP32 can be powered via USB-C or external 5V supply (regulated to 3.3V internally).
-4. I2S sharing: ADC and DAC can share MCLK, BCLK, and LRCLK since they're on the same I2S bus.
-5. ADC pins: GPIO 32, 33, 34 are ADC1 channels and work well for potentiometers.
+1. Audio ground: Ensure all audio components share a common ground with the ESP32.
+2. Power: ESP32 can be powered via USB-C or external 5V supply via VIN pin (regulated to 3.3V internally).
+3. I2S sharing: ADC and DAC can share MCLK (D25), BCLK (D4), and LRCLK (D15) since they're on the same I2S bus.
+4. ADC pins: D32, D33, D34 are ADC1 channels and work well for potentiometers.
+5. I2C pins: D21 (SDA) and D19 (SCL) are standard I2C pins for the display.
