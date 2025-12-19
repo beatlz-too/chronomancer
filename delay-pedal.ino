@@ -6,6 +6,16 @@
 #include "display/display.h"
 #include "display/display.cpp"
 
+// Potentiometer modules
+#include "potentiometers/delay_time.h"
+#include "potentiometers/delay_time.cpp"
+#include "potentiometers/feedback.h"
+#include "potentiometers/feedback.cpp"
+#include "potentiometers/level.h"
+#include "potentiometers/level.cpp"
+#include "potentiometers/controller.h"
+#include "potentiometers/controller.cpp"
+
 void setup() {
   // Initialize serial communication for debugging
   Serial.begin(115200);
@@ -15,9 +25,10 @@ void setup() {
   // Initialize display module
   initDisplay();
   updateDisplayTitle("Tape Delay");
-  updateDisplayBody("Time: 150ms");
   
-  // TODO: Initialize potentiometer modules
+  // Initialize potentiometer controller (this also initializes all pots and sets initial display)
+  initPotentiometerController();
+  
   // TODO: Initialize delay module
   // TODO: Initialize I2S audio (ADC and DAC)
   
@@ -25,9 +36,10 @@ void setup() {
 }
 
 void loop() {
-  // TODO: Read potentiometer values
+  // Update potentiometers and display (reads pots and updates display automatically)
+  updatePotentiometersAndDisplay();
+  
   // TODO: Update delay parameters based on potentiometers
   // TODO: Process audio through delay
-  // TODO: Update display with current values
 }
 
