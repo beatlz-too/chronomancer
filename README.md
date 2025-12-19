@@ -82,6 +82,7 @@ Then rotates the feedback pot
 75%
 
 ## Execution plan
+0. Have a `delay-pedal.ino` file ready with the `setup()` and `loop()` functions. This is our compilation file where we'll import all of our C++ modules.`
 1. Display code and implementation: make sure the display is working from the get-go. We should have the name of the delay in the title. The body will show the level of the last value changed by the user, defaulting to delay time. So, if the user 
 2. Potentiometer code and implementation. This means coding the potentiometers individual files and the display-potentiometer-controller.
 3. Delays. We'll make individual files for the delays, which will be first hardcoded in `setup()`. We'll start with the simplest: a digital delay that uses the three params (time, feedback, level) from the pots.
